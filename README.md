@@ -1,7 +1,7 @@
 # Qt GraphViz libcgraph wrapper
 
 The baseline library used in the new CUDA-centric Open|SpeedShop Graphical User Interface (GUI) which allows GraphViz DOT formatted data to be imported into
-a Qt application by wrapping the GraphViz libcgraph library within the Qt Graphics View Framework.
+a Qt application by wrapping the GraphViz libcgraph library within the Qt Graphics View Framework.    The Graphviz libgvc library is used to compute the layout of the graph using the DOT rendering engine.
 
 The graph structure can be created manually either by:
 
