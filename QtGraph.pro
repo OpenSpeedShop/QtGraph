@@ -28,7 +28,7 @@ INCLUDEPATH += . private common
 
 DEFINES          += QGRAPHVIZ_LIBRARY
 
-INCLUDEPATH += $$GRAPHVIZ_ROOT/include/graphviz
+INCLUDEPATH += $$GRAPHVIZ_ROOT/include
 LIBS += -L$$GRAPHVIZ_ROOT/lib -lcdt -lgvc -lcgraph
 
 PUBLIC_HEADERS += \
