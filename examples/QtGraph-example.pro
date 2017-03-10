@@ -15,6 +15,10 @@ TEMPLATE = app
 #DEFINES += MANUAL_GRAPH_CONSTRUCTION_EXAMPLE
 
 INSTALL_ROOT = $$(INSTALL_ROOT)
+GRAPHVIZ_ROOT = $$(GRAPHVIZ_ROOT)
+
+INCLUDEPATH += $$GRAPHVIZ_ROOT/include/graphviz
+LIBS += -L$$GRAPHVIZ_ROOT/lib -lcdt -lgvc -lcgraph
 
 INCLUDEPATH += $$INSTALL_ROOT/include $$INSTALL_ROOT/include/QtGraph
 CONFIG(debug, debug|release) {

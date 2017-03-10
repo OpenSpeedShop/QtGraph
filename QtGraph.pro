@@ -22,13 +22,14 @@ isEmpty(BUILD) {
     BUILD = $$QMAKE_HOST.arch
 }
 
+GRAPHVIZ_ROOT = $$(GRAPHVIZ_ROOT)
+
 INCLUDEPATH += . private common
 
 DEFINES          += QGRAPHVIZ_LIBRARY
 
-GRAPHVIZ_PATH = /usr
-INCLUDEPATH += $$GRAPHVIZ_PATH/include/graphviz
-LIBS += -L$$GRAPHVIZ_PATH/lib -lcdt -lgvc -lcgraph
+INCLUDEPATH += $$GRAPHVIZ_ROOT/include/graphviz
+LIBS += -L$$GRAPHVIZ_ROOT/lib -lcdt -lgvc -lcgraph
 
 PUBLIC_HEADERS += \
            common/argonavis-lib-config.h \
