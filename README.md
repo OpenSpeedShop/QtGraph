@@ -13,7 +13,9 @@ The graph structure can be created manually either by:
 
 ## Build and Install the QtGraph library
 
-Clone this repo and open the qmake project file named "QtGraph.pro" with Qt Creator or by running qmake manually.  Configure the INSTALL_ROOT macro as desired.
+Clone this repo and open the qmake project file named "QtGraph.pro" with Qt Creator or by running qmake manually.
+
+Configure the INSTALL_ROOT and GRAPHVIZ_ROOT variables as desired.
 
 The INSTALL_ROOT macro defines the installation directory for the QtGraph library header and library files in the following
 directory structure:
@@ -24,15 +26,28 @@ INSTALL_ROOT/include/QtGraph
       |     /lib64/$$QT_VERSION
 ```
 
+The GRAPHVIZ_ROOT variable should be set to the installation directory of the Graphviz header and library files.
+
 Once the build completes type "make install" to have the header and libraries files copied into the directory structure
 show above.
+
 
 ## Build and Execute the simple QtGraph library example application
 
 There is a simple example provided in the "examples" directory.  Open and build the qmake project file named "QtGraph-example.pro"
-with Qt Creator or by running qmake manually.  Insure that the INSTALL_ROOT macro is the same as in the QtGraph library build step.
+with Qt Creator or by running qmake manually.  Insure that the INSTALL_ROOT and GRAPHVIZ_ROOT variables are the same as in the QtGraph
+library build step.
+
+By default the example constructs the graph from a string (in memory).  However by uncommenting the DEFINE in the QtGraphExample.pro file
+the example will show how to construct the graph by adding individual vertices and then specifying the edges between verticies.
+
+
+```
+# Uncomment below if manual graph construction example is desired
+#DEFINES += MANUAL_GRAPH_CONSTRUCTION_EXAMPLE
+```
 
 
 ## Contributions
 
-Pull requests are appreciated!  Contributions must be per the GNU Lesser General Public License (LGPL) used by this software.  Please following the same source-code formatting rules.
+Pull requests will be appreciated!  Contributions must be per the GNU Lesser General Public License (LGPL) used by this software.  Please following the same source-code formatting rules.
