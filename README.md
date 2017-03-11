@@ -18,11 +18,11 @@ Clone this repo and open the qmake project file named "QtGraph.pro" with Qt Crea
 The INSTALL_ROOT macro defines the installation directory for the QtGraph library header and library files in the following
 directory structure:
 
-...
+```
 INSTALL_ROOT/include/QtGraph
       |
       |     /lib64/$$QT_VERSION
-...
+```
 
 Once the build completes type "make install" to have the header and libraries files copied into the directory structure
 show above.
