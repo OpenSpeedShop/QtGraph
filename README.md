@@ -11,6 +11,30 @@ The graph structure can be created manually either by:
 
 ## Instructions
 
+## Install GraphViz or Build from source
+
+NOTE:  If GraphViz needs to be built from source, the latest stable snapshot tarball can be found here:
+
+http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.40.1.tar.gz
+
+For NASA HECC machines, the Graphviz development environment can be found in one of the 'pkgsrc' packages.  For example:
+
+```
+module load pkgsrc/2016Q2
+```
+
+Thus, the GRAPHVIZ_ROOT environment variable would be the following:
+
+```
+export GRAPHVIZ_ROOT=/nasa/pkgsrc/2016Q2
+```
+
+For Ubuntu 14.04 or 16.04 LTS systems, the Graphviz develop environment can be installed via:
+
+```
+sudo apt-get install libgraphviz-dev
+```
+
 ## Build and Install the QtGraph library
 
 Clone this repo and open the qmake project file named "QtGraph.pro" with Qt Creator or by running qmake manually.
