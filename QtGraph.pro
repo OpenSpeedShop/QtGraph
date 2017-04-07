@@ -22,6 +22,7 @@ isEmpty(BUILD) {
     BUILD = $$QMAKE_HOST.arch
 }
 
+INSTALL_PATH = $$(INSTALL_PATH)
 GRAPHVIZ_ROOT = $$(GRAPHVIZ_ROOT)
 
 INCLUDEPATH += . private common
@@ -53,13 +54,13 @@ SOURCES += QGraphCanvas.cpp \
            private/QGraphNodePrivate.cpp
 
 contains(BUILD, x86_64) {
-    target.path = $$(INSTALL_ROOT)/lib64/$$QT_VERSION
+    target.path = $$INSTALL_PATH/lib64/$$QT_VERSION
 }
 else {
-    target.path = $$(INSTALL_ROOT)/lib/$$QT_VERSION
+    target.path = $$INSTALL_PATH/lib/$$QT_VERSION
 }
 
-target_header.path = $$(INSTALL_ROOT)/include/QtGraph
+target_header.path = $$INSTALL_PATH/include/QtGraph
 target_header.files = $$PUBLIC_HEADERS
 
 INSTALLS += target_header target
