@@ -54,10 +54,12 @@ SOURCES += QGraphCanvas.cpp \
            private/QGraphNodePrivate.cpp
 
 contains(BUILD, x86_64) {
-    target.path = $$INSTALL_PATH/lib64/$$QT_VERSION
+    #target.path = $$INSTALL_PATH/lib64/$$QT_VERSION
+    target.path = $$INSTALL_PATH/lib64
 }
 else {
-    target.path = $$INSTALL_PATH/lib/$$QT_VERSION
+    #target.path = $$INSTALL_PATH/lib/$$QT_VERSION
+    target.path = $$INSTALL_PATH/lib
 }
 
 target_header.path = $$INSTALL_PATH/include/QtGraph
