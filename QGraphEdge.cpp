@@ -136,10 +136,10 @@ QPainterPath QGraphEdge::shape() const
 {
     Q_D(const QGraphEdge);
     // initialize a painter path stroker to generate an outline of the edge and edge label painter paths
-    // this will make a slight larger area to make it easier for the suer to select edges
+    // this will make a slight larger area to make it easier for the user to select edges
     QPainterPathStroker stroker;
     stroker.setWidth( 20 );
-    // create a path containing both edge path and edge label bounding box
+    // create a path containing both edge path, edge arrow path and edge label bounding box
     QPainterPath jointPath( d->m_path );
     jointPath.addRect( d->m_labelPath.boundingRect() );
     // return the outline of the combined painter path
@@ -150,7 +150,7 @@ QPainterPath QGraphEdge::shape() const
  * @brief QGraphEdge::paint
  * @param painter - the scene painter instance to be used for drawing the background
  * @param option - provides style options for the item, such as its state, exposed area and its level-of-detail hints
- * @param widget -it points to the widget that is being painted on (for cached painting this is NULL)
+ * @param widget - it points to the widget that is being painted on (for cached painting this is NULL)
  *
  * Reimplementation of the QGraphicsObject::paint virtual function used to draw the edge on the graph canvas.
  */
@@ -171,6 +171,10 @@ void QGraphEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     }
 
     painter->drawPath( d->m_path );
+
+    painter->setBrush( painter->pen().color() );
+
+    painter->drawPath( d->m_arrowPath );
 
     if ( ! d->m_labelPath.isEmpty() ) {
         QPen pen( d->m_fontColor, pPen.widthF() / 4.0 );

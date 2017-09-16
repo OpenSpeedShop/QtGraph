@@ -34,7 +34,6 @@
 #include <QFontMetricsF>
 #include <QPainter>
 
-
 /**
  * @brief QGraphEdgePrivate::QGraphEdgePrivate
  * @param name - the edge label
@@ -71,6 +70,40 @@ QGraphEdgePrivate::QGraphEdgePrivate(Agedge_t *edge, QGraphEdge *parent)
 }
 
 /**
+ * @brief QGraphEdgePrivate::createNormalArrow
+ * @param line - the final line segment in an edge to build the arrow on
+ * @return - The lines forming the normal arrow type
+ *
+ * This function returns a polygon forming the normal arrow type.  To should be drawn using a brush to make it solid filled.
+ * GraphViz arrow shapes are documented here: "http://graphviz.org/doc/info/arrows.html"
+ */
+QPolygonF QGraphEdgePrivate::createNormalArrow(const QLineF &line)
+{
+    const QLineF n = line.normalVector();
+
+    const double SCALE_FACTOR = 0.5;
+
+    const QTransform transform( SCALE_FACTOR, 0.0,          0.0,
+                                0.0,          SCALE_FACTOR, 0.0,
+                                0.0,          0.0,          1.0 );
+
+    const QPointF translation = transform.map( QPointF( n.dx(), n.dy() ) );
+
+    const QPointF firstAndLastPoint = line.p1() + translation;
+
+    QPolygonF polygon;
+
+    // add the three points of the arrow head
+    polygon.append( firstAndLastPoint );
+    polygon.append( line.p2() );
+    polygon.append( line.p1() - translation );
+    // close the polygon
+    polygon.append( firstAndLastPoint );
+
+    return polygon;
+}
+
+/**
  * @brief QGraphEdgePrivate::setAttribute
  * @param name - the name of the attribute to set
  * @param value - the value of the attribute to set
@@ -99,6 +132,9 @@ void QGraphEdgePrivate::updateState()
     QPainterPath localPath = path();
     QPainterPath localLabelPath = labelPath( m_fontColor, m_fontSize, m_font );
 
+    // generate painter paths for the edge arrows
+    QPainterPath arrowPaths = arrowPath();
+
     // create a path containing both edge path and edge label path to determine bounding box of combined paths
     QPainterPath jointPath( localPath );
     jointPath.addPath( localLabelPath );
@@ -115,6 +151,8 @@ void QGraphEdgePrivate::updateState()
     m_path = q->mapFromScene( localPath );
     // map the edge label painter path to local graphics item coordinates
     m_labelPath = q->mapFromScene( localLabelPath );
+    // map the edge arrow painter path to the local graphics item coordinates
+    m_arrowPath = q->mapFromScene( arrowPaths );
 }
 
 /**
@@ -182,6 +220,8 @@ QPainterPath QGraphEdgePrivate::path() const
             // draw line from starting point to first point in spline
             path.moveTo( point( b->sp ) );
             path.lineTo( point( b->list[0] ) );
+            // create head arrow to build the proper outline for selection highlighting
+            path.addPolygon( QGraphEdgePrivate::createNormalArrow( QLineF( point( b->list[0] ), point( b->sp ) ) ) );
         }
         else {
             // set the starting point of the spline
@@ -195,6 +235,45 @@ QPainterPath QGraphEdgePrivate::path() const
         if ( b->eflag ) {
             // draw line from the last point in the spline to the ending point
             path.lineTo( point( b->ep ) );
+            // create tail arrow to build the proper outline for selection highlighting
+            path.addPolygon( QGraphEdgePrivate::createNormalArrow( QLineF( point( b->list[b->size-1] ), point( b->ep ) ) ) );
+        }
+    }
+
+    return path;
+}
+
+/**
+ * @brief QGraphEdgePrivate::arrowPath
+ * @return - the QPainterPath representation of the edge head and tail arrows
+ *
+ * Uses the spline attribute state or the underlying libcgraph edge to return the QPainterPath representation.
+ */
+QPainterPath QGraphEdgePrivate::arrowPath() const
+{
+    QPainterPath path;
+
+    // get the Cubic
+    const splines* spline = ED_spl( m_edge );
+
+    // process each Cubic Bezier Spline
+    // NOTE: all points are expressed in the global coordinate system
+    for( bezier* b = spline->list; b < spline->list + spline->size; b++ ) {
+        if ( b->size % 3 != 1 )
+            continue;  // Cubic Bezier Spline doesn't have the correct number of points
+        // check if there is a beginning line segment
+        if ( b->sflag ) {
+            // position path at the first point in spline
+            path.moveTo( point( b->list[0] ) );
+            // create head arrow
+            path.addPolygon( QGraphEdgePrivate::createNormalArrow( QLineF( point( b->list[0] ), point( b->sp ) ) ) );
+        }
+        // check if there is a ending line segment
+        if ( b->eflag ) {
+            // position path at the ending point
+            path.moveTo( point( b->ep ) );
+            // create tail arrow
+            path.addPolygon( QGraphEdgePrivate::createNormalArrow( QLineF( point( b->list[b->size-1] ), point( b->ep ) ) ) );
         }
     }
 

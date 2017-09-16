@@ -52,8 +52,10 @@ private:
     double height() const;
     QPointF point(const pointf& coord) const;
     QPainterPath path() const;
+    QPainterPath arrowPath() const;
     QPainterPath labelPath(QColor& fontcolor, double& fontsize, QFont& font) const;
     void drawLabel(QPainter* painter) const;
+    static QPolygonF createNormalArrow(const QLineF &line);
 
 private:
 
@@ -68,6 +70,7 @@ private:
     // edge state after layout
     QPainterPath m_path;
     QPainterPath m_labelPath;
+    QPainterPath m_arrowPath;
     QFont m_font;
     QColor m_fontColor;
     double m_fontSize;
