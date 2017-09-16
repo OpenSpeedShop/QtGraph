@@ -6,7 +6,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
+else: QMAKE_CXXFLAGS += -std=c++11
 
 TEMPLATE = lib
 
