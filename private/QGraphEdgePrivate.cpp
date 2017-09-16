@@ -34,6 +34,8 @@
 #include <QFontMetricsF>
 #include <QPainter>
 
+#include <cmath>
+
 /**
  * @brief QGraphEdgePrivate::QGraphEdgePrivate
  * @param name - the edge label
@@ -79,26 +81,29 @@ QGraphEdgePrivate::QGraphEdgePrivate(Agedge_t *edge, QGraphEdge *parent)
  */
 QPolygonF QGraphEdgePrivate::createNormalArrow(const QLineF &line)
 {
-    const QLineF n = line.normalVector();
+    double angle1 = 360.0 - line.angle() - 20.0 + 180.0;
+    if ( angle1 < 0.0 ) angle1 += 360.0;
+    else if ( angle1 >= 360.0 ) angle1 += 360.0;
+    angle1 = angle1 * 3.1415926 / 180.0;
 
-    const double SCALE_FACTOR = 0.5;
+    double angle2 = 360.0 - line.angle() + 20.0 + 180.0;
+    if ( angle2 < 0.0 ) angle2 += 360.0;
+    else if ( angle2 >= 360.0 ) angle2 += 360.0;
+    angle2 = angle2 * 3.1415926 / 180.0;
 
-    const QTransform transform( SCALE_FACTOR, 0.0,          0.0,
-                                0.0,          SCALE_FACTOR, 0.0,
-                                0.0,          0.0,          1.0 );
+    const double R = line.length();
 
-    const QPointF translation = transform.map( QPointF( n.dx(), n.dy() ) );
-
-    const QPointF firstAndLastPoint = line.p1() + translation;
+    const QPointF translation1 = QPointF( R * std::cos( angle1 ), R * std::sin( angle1 ) );
+    const QPointF translation2 = QPointF( R * std::cos( angle2 ), R * std::sin( angle2 ) );
 
     QPolygonF polygon;
 
     // add the three points of the arrow head
-    polygon.append( firstAndLastPoint );
+    polygon.append( line.p2() + translation1 );
     polygon.append( line.p2() );
-    polygon.append( line.p1() - translation );
+    polygon.append( line.p2() + translation2 );
     // close the polygon
-    polygon.append( firstAndLastPoint );
+    polygon.append( line.p2() + translation1 );
 
     return polygon;
 }
