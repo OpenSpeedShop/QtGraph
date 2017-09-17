@@ -81,15 +81,10 @@ QGraphEdgePrivate::QGraphEdgePrivate(Agedge_t *edge, QGraphEdge *parent)
  */
 QPolygonF QGraphEdgePrivate::createNormalArrow(const QLineF &line)
 {
-    double angle1 = 360.0 - line.angle() - 20.0 + 180.0;
-    if ( angle1 < 0.0 ) angle1 += 360.0;
-    else if ( angle1 >= 360.0 ) angle1 -= 360.0;
-    angle1 = angle1 * 3.1415926 / 180.0;
+    const double PI = std::acos( -1 );
 
-    double angle2 = 360.0 - line.angle() + 20.0 + 180.0;
-    if ( angle2 < 0.0 ) angle2 += 360.0;
-    else if ( angle2 >= 360.0 ) angle2 -= 360.0;
-    angle2 = angle2 * 3.1415926 / 180.0;
+    const double angle1 = std::fmod( 180.0 - line.angle() + 20.0, 360.0 ) * PI / 180.0;
+    const double angle2 = std::fmod( 180.0 - line.angle() - 20.0, 360.0 ) * PI / 180.0;
 
     const double R = line.length();
 
