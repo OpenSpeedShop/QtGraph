@@ -306,8 +306,10 @@ QPainterPath QGraphEdgePrivate::labelPath(QColor& fontcolor, double& fontsize, Q
         // get label font family and color
         const QColor fontcolorLocal( textlabel->fontcolor );
         QFont fontLocal( textlabel->fontname );
+        // calculate the pixel size of the font
+        const int pixelSize = std::max( textlabel->fontsize * 72.0 / m_logicalDpiY - 2, 6.0 );
         // set pixel size by scaling point size in accordance to logical DPI Y of paint device
-        fontLocal.setPixelSize( textlabel->fontsize * 72.0 / m_logicalDpiY );
+        fontLocal.setPixelSize( pixelSize );
         const QFontMetricsF fontMetrics( fontLocal );
 
         // get vertical alignment within label space rectangle
