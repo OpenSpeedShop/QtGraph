@@ -79,8 +79,6 @@ Pull requests will be appreciated!  Contributions must be per the GNU Lesser Gen
 
 ## Credits
 
-There appears to be several software packages developed 4 or more years ago that didn't quite fit the requirements for this project.
-
 One great online presentation regarding a particular implementation that provided supplementary information that the GraphViz documentation lacked was the following source: 
 
 http://www.mupuf.org/blog/2010/07/08/how_to_use_graphviz_to_draw_graphs_in_a_qt_graphics_scene/
